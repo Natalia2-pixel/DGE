@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Choose Your Ethics Adventure</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .container {
+            width: 80%;
+            max-width: 700px;
+            text-align: center;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+        }
+        .container h1 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+        .container p {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            color: #555;
+        }
+        .button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 1.1em;
+            color: white;
+            background: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .button:hover {
+            background: #0056b3;
+        }
+        .feedback {
+            font-size: 1em;
+            margin: 10px 0;
+            color: #007bff;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Choose Your Ethics Adventure</h1>
+        <p id="scenario">Welcome! Your mission is to design an ethical educational tool. Click "Start" to begin.</p>
+        <button class="button" id="start-button" onclick="startGame()">Start</button>
+        <button class="button hidden" id="choice1a" onclick="nextScenario(1, true)">Train the AI on diverse datasets</button>
+        <button class="button hidden" id="choice1b" onclick="nextScenario(1, false)">Use existing data without checking</button>
+        <button class="button hidden" id="choice2a" onclick="nextScenario(2, true)">Collaborate with diverse experts</button>
+        <button class="button hidden" id="choice2b" onclick="nextScenario(2, false)">Let the algorithm decide</button>
+        <button class="button hidden" id="choice3a" onclick="nextScenario(3, true)">Provide free access in schools</button>
+        <button class="button hidden" id="choice3b" onclick="nextScenario(3, false)">Offer as a paid app only</button>
+        <button class="button hidden" id="choice4a" onclick="nextScenario(4, true)">Incorporate culturally diverse content</button>
+        <button class="button hidden" id="choice4b" onclick="nextScenario(4, false)">Use one-size-fits-all content</button>
+        <button class="button hidden" id="choice5a" onclick="nextScenario(5, true)">Secure storage and consent</button>
+        <button class="button hidden" id="choice5b" onclick="nextScenario(5, false)">Collect data without consent</button>
+        <p class="feedback hidden" id="feedback"></p>
+    </div>
+
+    <script>
+        const scenarios = [
+            "Your tool uses AI to assess student performance. How will you ensure the algorithm is unbiased?",
+            "Your tool suggests learning resources. How do you avoid discrimination based on sex, race, or disability?",
+            "Your tool is ready for rollout. How do you ensure it’s available for all students?",
+            "How do you design content that reflects diversity?",
+            "How do you handle student data?"
+        ];
+
+        const correctChoices = [
+            "Great choice! Training on diverse datasets ensures fairness.",
+            "Excellent! Collaborating with experts avoids discrimination.",
+            "Good job! Free access promotes fairness for all.",
+            "Well done! Culturally diverse content is inclusive.",
+            "Perfect! Secure storage and consent respect privacy."
+        ];
+
+        const wrongChoices = [
+            "Oops! Using unchecked data risks bias in the tool.",
+            "Not ideal! Letting the algorithm decide can lead to discrimination.",
+            "Not fair! A paid app limits access for many students.",
+            "Think again! One-size-fits-all content isn't inclusive.",
+            "Be careful! Collecting data without consent violates privacy."
+        ];
+
+        let currentScenario = 0;
+        let score = 0;
+
+        function startGame() {
+            document.getElementById("start-button").classList.add("hidden");
+            showScenario();
+        }
+
+        function showScenario() {
+            if (currentScenario < scenarios.length) {
+                document.getElementById("scenario").textContent = scenarios[currentScenario];
+                document.getElementById(`choice${currentScenario + 1}a`).classList.remove("hidden");
+                document.getElementById(`choice${currentScenario + 1}b`).classList.remove("hidden");
+            } else {
+                endGame();
+            }
+        }
+
+        function nextScenario(scenarioNumber, isCorrect) {
+            document.getElementById(`choice${scenarioNumber}a`).classList.add("hidden");
+            document.getElementById(`choice${scenarioNumber}b`).classList.add("hidden");
+            const feedback = document.getElementById("feedback");
+            feedback.classList.remove("hidden");
+            feedback.textContent = isCorrect
+                ? correctChoices[scenarioNumber - 1]
+                : wrongChoices[scenarioNumber - 1];
+            if (isCorrect) score++;
+            setTimeout(() => {
+                feedback.classList.add("hidden");
+                currentScenario++;
+                showScenario();
+            }, 2000);
+        }
+
+        function endGame() {
+            document.getElementById("scenario").textContent =
+                `Game Over! Your ethical score: ${score} out of ${scenarios.length}. Try again to improve your decisions!`;
+        }
+    </script>
+</body>
+</html>
